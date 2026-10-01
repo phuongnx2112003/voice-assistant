@@ -1,0 +1,18 @@
+.venv/
+.env
+__pycache__/
+*.pyc
+models/stt/sherpa-onnx-zipformer-vi-30M-int8-2026-02-09/
+models/wakeword/*.onnx
+.data/
+owner_embedding.npy
+
+# Local runtime models and generated audio
+models/stt/
+models/tts/
+models/vad/*.onnx
+models/speaker/*.onnx
+models/diarization/
+models/wakeword/*.onnx
+*.wav
+*.mp3

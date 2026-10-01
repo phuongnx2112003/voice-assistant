@@ -1,0 +1,4 @@
+[console_scripts]
+enroll-speaker = voice_assistant.cli.enroll_speaker:main
+verify-speaker = voice_assistant.cli.verify_speaker:main
+voice-assistant = voice_assistant.cli.voice_cli:main

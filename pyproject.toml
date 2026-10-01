@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hey-phuong-voice-assistant"
+version = "0.1.0"
+description = "Local Vietnamese voice assistant"
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.scripts]
+voice-assistant = "voice_assistant.cli.voice_cli:main"
+enroll-speaker = "voice_assistant.cli.enroll_speaker:main"
+verify-speaker = "voice_assistant.cli.verify_speaker:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit", "tests/integration"]
+addopts = "-q"

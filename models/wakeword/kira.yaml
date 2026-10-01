@@ -1,0 +1,45 @@
+model_name: "kira"
+target_phrase:
+  - "hey kira"
+  - "okay kira"
+  - "hello kira"
+custom_negative_phrases:
+  - "kira"
+  - "hey kiraa"
+  - "hey kiera"
+  - "hey keira"
+  - "hey kira please"
+  - "hey vera"
+  - "hey mira"
+  - "hey zira"
+  - "hey lira"
+  - "hey sierra"
+  - "okay mira"
+  - "hello vera"
+n_samples: 75000
+n_samples_val: 7500
+tts_batch_size: 50
+augmentation_batch_size: 16
+augmentation_rounds: 2
+piper_sample_generator_path: "./piper-sample-generator"
+output_dir: "./kira_model"
+rir_paths:
+  - "./mit_rirs"
+background_paths:
+  - "./audioset_16k"
+  - "./fma"
+background_paths_duplication_rate:
+  - 1
+  - 1
+false_positive_validation_data_path: "./validation_set_features.npy"
+feature_data_files:
+  "ACAV100M_sample": "./openwakeword_features_ACAV100M_2000_hrs_16bit.npy"
+batch_n_per_class:
+  "ACAV100M_sample": 1024
+  "adversarial_negative": 50
+  "positive": 50
+model_type: "dnn"
+layer_size: 32
+steps: 50000
+max_negative_weight: 1500
+target_false_positives_per_hour: 0.2
