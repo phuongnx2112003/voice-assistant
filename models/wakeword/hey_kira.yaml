@@ -1,18 +1,6 @@
-# openWakeWord custom-training configuration for the wake phrase: "hey kira".
-#
-# This file is consumed by the openWakeWord training workflow.  Paths are
-# intentionally relative to the training workspace; update them if your
-# downloaded training assets live elsewhere.
-
 model_name: "hey_kira"
-
-# Say the target phrase naturally in several equivalent forms.  Keep this list
-# small: every additional phrase makes the wake-word definition broader.
 target_phrase:
   - "hey kira"
-
-# These phrases are deliberately close to the target, so the model learns not
-# to trigger on a name alone or on common near-homophones.
 custom_negative_phrases:
   - "kira"
   - "key"
@@ -26,8 +14,6 @@ custom_negative_phrases:
   - "hey sierra"
   - "okay kira"
   - "hello kira"
-
-# Synthetic positive generation and augmentation.
 n_samples: 75000
 n_samples_val: 7500
 tts_batch_size: 50
@@ -35,9 +21,6 @@ augmentation_batch_size: 16
 augmentation_rounds: 2
 piper_sample_generator_path: "./piper-sample-generator"
 output_dir: "./hey_kira_model"
-
-# Training audio assets.  These must exist in the openWakeWord training
-# workspace before starting training.
 rir_paths:
   - "./mit_rirs"
 background_paths:
@@ -49,8 +32,6 @@ background_paths_duplication_rate:
 false_positive_validation_data_path: "./validation_set_features.npy"
 feature_data_files:
   "ACAV100M_sample": "./openwakeword_features_ACAV100M_2000_hrs_16bit.npy"
-
-# Class balance and model training targets.
 batch_n_per_class:
   "ACAV100M_sample": 1024
   "adversarial_negative": 50

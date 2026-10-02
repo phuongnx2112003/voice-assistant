@@ -9,6 +9,8 @@ from ..speaker_store import (
     SPEAKER_DATABASE,
     SPEAKER_ENROLL_SAMPLES,
     SPEAKER_ENROLL_SECONDS,
+    SPEAKER_ENROLL_MIN_SIMILARITY,
+    SPEAKER_MIN_SAMPLE_SECONDS,
     SPEAKER_MODEL,
     SPEAKER_NAME,
     normalize,
@@ -49,14 +51,30 @@ def record(seconds: float) -> np.ndarray:
 def main():
     extractor = build_extractor()
     print(f"=== ENROLL '{SPEAKER_NAME}' ===")
-    print("Nên thu ở các tư thế/khoảng cách tự nhiên khác nhau, nhưng tránh im lặng và tiếng ồn lớn.")
+    print("Nói liên tục một câu tự nhiên, tránh im lặng và tiếng ồn lớn.")
+    print(
+        f"Mỗi mẫu cần dài ít nhất {SPEAKER_MIN_SAMPLE_SECONDS:g}s; "
+        f"mẫu lệch dưới similarity {SPEAKER_ENROLL_MIN_SIMILARITY:.2f} sẽ phải thu lại."
+    )
 
     embeddings = []
-    for index in range(SPEAKER_ENROLL_SAMPLES):
-        input(f"Nhấn ENTER để thu mẫu {index + 1}/{SPEAKER_ENROLL_SAMPLES}...")
-        embedding = compute_embedding(extractor, record(SPEAKER_ENROLL_SECONDS))
+    while len(embeddings) < SPEAKER_ENROLL_SAMPLES:
+        index = len(embeddings) + 1
+        input(f"Nhấn ENTER để thu mẫu {index}/{SPEAKER_ENROLL_SAMPLES}...")
+        samples = record(SPEAKER_ENROLL_SECONDS)
+        if samples.size / SAMPLE_RATE < SPEAKER_MIN_SAMPLE_SECONDS:
+            print("⚠️ Mẫu quá ngắn; hãy nói lâu hơn rồi thử lại.")
+            continue
+        embedding = compute_embedding(extractor, samples)
+        if embeddings:
+            centroid = normalize(np.mean(embeddings, axis=0))
+            score = float(np.dot(centroid, embedding))
+            print(f"  similarity với các mẫu đã nhận: {score:.4f}")
+            if score < SPEAKER_ENROLL_MIN_SIMILARITY:
+                print("⚠️ Mẫu lệch nhiều; hãy thu lại ở nơi yên hơn và nói liên tục.")
+                continue
         embeddings.append(embedding)
-        print(f"✓ Đã nhận mẫu {index + 1}; embedding dimension: {embedding.size}")
+        print(f"✓ Đã nhận mẫu {index}; embedding dimension: {embedding.size}")
 
     count = replace_embeddings(SPEAKER_NAME, embeddings)
     print(f"\n✅ Đã lưu {count} embedding vào database local: {SPEAKER_DATABASE}")

@@ -19,6 +19,7 @@ dependencies = {file = ["requirements.txt"]}
 voice-assistant = "voice_assistant.cli.voice_cli:main"
 enroll-speaker = "voice_assistant.cli.enroll_speaker:main"
 verify-speaker = "voice_assistant.cli.verify_speaker:main"
+record-speaker-samples = "voice_assistant.cli.record_speaker_samples:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests/unit", "tests/integration"]

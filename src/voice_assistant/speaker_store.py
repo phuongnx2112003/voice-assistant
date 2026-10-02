@@ -26,6 +26,12 @@ SPEAKER_THRESHOLD = float(os.getenv("SPEAKER_THRESHOLD", "0.60"))
 SPEAKER_ENROLL_SAMPLES = int(os.getenv("SPEAKER_ENROLL_SAMPLES", "5"))
 SPEAKER_ENROLL_SECONDS = float(os.getenv("SPEAKER_ENROLL_SECONDS", "5"))
 SPEAKER_VERIFY_SECONDS = float(os.getenv("SPEAKER_VERIFY_SECONDS", "4"))
+# A speaker embedding from a short VAD segment is noticeably unstable.  This
+# is deliberately independent from the maximum duration of an STT command.
+SPEAKER_MIN_SAMPLE_SECONDS = float(os.getenv("SPEAKER_MIN_SAMPLE_SECONDS", "1.5"))
+# During enrollment, reject a recording that does not resemble the already
+# accepted recordings.  Tune this after reviewing real scores with verify_speaker.
+SPEAKER_ENROLL_MIN_SIMILARITY = float(os.getenv("SPEAKER_ENROLL_MIN_SIMILARITY", "0.50"))
 
 
 def normalize(embedding: np.ndarray) -> np.ndarray:
